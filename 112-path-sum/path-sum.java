@@ -15,28 +15,13 @@
  */
 class Solution {
     public boolean hasPathSum(TreeNode root, int targetSum) {
-        if (root == null) {
-            return false;
+        if (root == null) return false;
+        if (root.left == null && root.right == null) {
+            return targetSum - root.val == 0;
         }
-        Stack<TreeNode> node = new Stack<>();
-        Stack<Integer> sum = new Stack<>();
-        node.push(root);
-        sum.push(root.val);
-        while(!node.isEmpty()) {
-            TreeNode n = node.pop();
-            int currentSum = sum.pop();
-            if (n.left == null && n.right == null && currentSum == targetSum) {
-                return true;
-            }
-            if (n.left != null) {
-                node.push(n.left);
-                sum.push(currentSum + n.left.val);
-            }
-            if (n.right != null) {
-                node.push(n.right);
-                sum.push(currentSum + n.right.val);
-            }
-        }
-        return false;
+        targetSum -= root.val;
+        Boolean leftSubTree = hasPathSum(root.left, targetSum);
+        Boolean rightSubTree = hasPathSum(root.right, targetSum);
+        return leftSubTree || rightSubTree;
     }
 }
