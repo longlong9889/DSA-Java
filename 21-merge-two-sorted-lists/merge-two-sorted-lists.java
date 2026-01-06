@@ -13,7 +13,7 @@ class Solution {
         ListNode current = new ListNode(Integer.MIN_VALUE);
         ListNode head = current;
         while (list1 != null && list2 != null) {
-            if (list1.val <= list2.val) {
+            if (list1.val < list2.val) {
                 current.next = list1;
                 list1 = list1.next;
             }
@@ -23,10 +23,11 @@ class Solution {
             }
             current = current.next;
         }
-        if (list1 == null) {
-            current.next = list2;
-        } else if (list2 == null) {
+        if (list1 != null) {
             current.next = list1;
+        }
+        if (list2 != null) {
+            current.next = list2;
         }
         return head.next;
     }
