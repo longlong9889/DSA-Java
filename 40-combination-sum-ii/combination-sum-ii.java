@@ -1,32 +1,30 @@
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Set<List<Integer>> set = new HashSet<>();
-        List<List<Integer>> ans = new LinkedList<>();
         Arrays.sort(candidates);
-        backtrack(ans, new ArrayList<>(), candidates, target, 0, set);
-        return ans;
+        List<Integer> current = new ArrayList<>();
+        Set<List<Integer>> result = new HashSet<>();
+        backtrack(candidates, target, current, result, 0, 0);
+        List<List<Integer>> actualResult = new ArrayList<>(result);
+        return actualResult; 
     }
-    private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] candidates, int target, int start, Set<List<Integer>> set) {
-        if (target == 0) {
-            if (!set.contains(tempList)) {
-                set.add(tempList);
-                list.add(new ArrayList<>(tempList));
+    private void backtrack(int[] candidates, int target, List<Integer> current, Set<List<Integer>> result, int start, int sum) {
+        if (sum == target) {
+            if (result.contains(current)) {
+                return;
             }
+            result.add(new ArrayList<>(current));
             return;
         }
-        if (target < 0) {
+        if (sum > target) {
             return;
         }
         for (int i = start; i < candidates.length; i++) {
             if (i > start && candidates[i] == candidates[i - 1]) {
                 continue;
             }
-            if (candidates[i] > target) {
-                return;
-            }
-            tempList.add(candidates[i]);
-            backtrack(list, tempList, candidates, target - candidates[i], i + 1, set);
-            tempList.remove(tempList.size() - 1);
+            current.add(candidates[i]);
+            backtrack(candidates, target, current, result, i + 1, sum + candidates[i]);
+            current.remove(current.size() - 1);
         }
     }
 }
